@@ -1,1 +1,3 @@
-# meteorite-explorer-app
+# Meteorite explorer
+
+

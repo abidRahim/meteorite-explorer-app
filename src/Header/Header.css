@@ -1,0 +1,11 @@
+header {
+  background: #3741ca;
+  height: var(--header-height)
+}
+
+.logo {
+  color: #fff;
+  text-align: center;
+  font-size: 2rem;
+  padding: 0.5em;
+}

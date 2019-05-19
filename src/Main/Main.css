@@ -1,0 +1,5 @@
+.main {
+  background-color: rgb(46, 45, 45);
+  height: calc(100vh - var(--header-height));
+  text-align: center;
+}
