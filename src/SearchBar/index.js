@@ -12,15 +12,20 @@ class SearchBar extends Component {
   }
 
   onChange(e) {
+    const data = {
+      currentPage: 1,
+      totalPages: null,
+      pageLimit: 20,
+    };
     const { search } = this.props;
     this.setState({
       value: e.target.value,
-    }, search(e.target.value));
+    }, search(data, e.target.value));
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    if(this.state.value === "") {
+    if (this.state.value === "") {
       console.log('true');
       return <p className="error-message">Oops, the search bar seems to be empty</p>;
     }
@@ -33,7 +38,7 @@ class SearchBar extends Component {
         <form onSubmit={this.handleSubmit}>
           <input type="search" name="search" className="search-input" id="meteor-name-search" placeholder="Enter search items" onChange={this.onChange} value={value} />
           <button className="search-btn" type="submit">SEARCH</button>
-        </form>        
+        </form>
       </div>
     );
   }

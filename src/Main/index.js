@@ -5,6 +5,7 @@ import axios from 'axios';
 import SearchBar from '../SearchBar';
 import MeteorTable from '../MeteorTable';
 import Loader from '../Loader';
+import Pagination from '../Pagination';
 import './Main.css';
 
 class Main extends Component {
@@ -13,18 +14,21 @@ class Main extends Component {
     this.state = {
       meteorData: [],
       displayData: [],
-      cacheData: [],
       isLoading: true,
-      listPerPage: 10,
-      offset: 0,
+      currentPage: null, 
+      totalPages: null,
+      pageLimit: null,
     };
-    this.searchResults = this.searchResults.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
-    this.next = this.next.bind(this);
-    this.back = this.back.bind(this);
+    this.onPageChanged = this.onPageChanged.bind(this);
   }
 
   async componentDidMount() {
+    const data = { 
+      currentPage: 1,
+      totalPages: null,
+      pageLimit: 20,
+    }
     try {
       const metData = await axios.get('https://data.nasa.gov/resource/gh4g-9sfh.json', {});
       this.setState({
@@ -34,69 +38,58 @@ class Main extends Component {
     } catch (error) {
       console.error(error);
     }
-    this.searchResults();
+    this.onPageChanged(data);
   }
 
-  searchResults = (searchKey) => {
-    const { meteorData, offset, listPerPage } = this.state;
+  onPageChanged = (data, searchKey) => {
+    const { meteorData } = this.state;
+    const { currentPage, totalPages, pageLimit } = data;
+    let displayData = [];
 
-    if (searchKey === undefined) {
-      this.setState({
-        displayData: [...meteorData].slice(offset * listPerPage, offset * listPerPage + listPerPage),
-      });
+    const offset = (currentPage - 1) * pageLimit;
+
+    if (searchKey === undefined) {  
+      displayData = [...meteorData].slice(offset, offset + pageLimit);    
     } else {
       const results = [...meteorData].filter(val => val.name.toLowerCase().indexOf(searchKey.toLowerCase()) !== -1);
-      this.setState({
-        displayData: results.slice(offset * listPerPage, offset * listPerPage + listPerPage),
-      });
+      displayData = results.slice(offset, offset + pageLimit);
     }
+    this.setState({ currentPage, displayData, totalPages });
   }
 
   handleSelectChange(e) {
     this.setState({
       listPerPage: e.target.value
-    }, this.searchResults());
+    });
   }
 
-  next() {
-    const { offset } = this.state;
-    this.setState({
-      offset: offset + 1,
-    }, this.searchResults());
-  }
+  render() { 
+    const { meteorData, displayData, isLoading} = this.state;
+    const totalMet = meteorData.length;
 
-  back() {
-    const { offset } = this.state;
-    if (offset !== 0)
-      this.setState({
-        offset: offset - 1,
-      }, this.searchResults());
-  }
-
-
-  render() {
-    const { displayData, isLoading, listPerPage, offset } = this.state;
+    if(totalMet === 0) return null;
     return (
       <main className="main">
-        <SearchBar search={this.searchResults} />
+        <SearchBar search={this.onPageChanged} />
         <div className="table-box">
           {isLoading ? <Loader /> : <MeteorTable displayData={displayData} />}
         </div>
         {displayData && displayData.length > 0 ? (
           <div className="nav-features">
-            <div className="width">
-            </div>
+            {/* <div className="width">
+            </div> */}
             <div className="navigation-button">
-              <button className="btn" type="button" onClick={this.back}>Previous</button>
-              <button className="btn" type="button" onClick={this.next}>Next</button>
+            <div className="d-flex flex-row py-4 align-items-center">
+              <Pagination totalRecords={totalMet} pageLimit={20} pageNeighbours={1} onPageChanged={this.onPageChanged} />
             </div>
-            <div className="listPerPage"> Results Per Page
+            </div>
+            {/* <div className="listPerPage"> Results Per Page
             <select name="listPerPage" id="listPerPage" className="select-box" value={listPerPage} onChange={this.handleSelectChange}>
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="30">30</option>
               </select>
-            </div>
+            </div> */}
           </div>
         ) : ('')}
       </main>
