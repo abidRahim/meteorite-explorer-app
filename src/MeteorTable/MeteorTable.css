@@ -1,0 +1,56 @@
+.table-data {
+  width: 92%;
+  margin: 0.6em auto;
+  font-size: 1.15rem;
+}
+
+.name {
+  width: 18em;
+}
+
+.table-container {
+  border-radius: 4px;
+}
+
+.table-container thead{
+  background-color: rgb(241, 152, 69);
+
+}
+
+tbody tr:nth-child(even) {
+  background-color:#fff;
+}
+
+tbody tr:nth-child(odd) {
+  background-color:  #ebebeb;
+}
+
+table {
+  width: 100%;
+  border-spacing: 0;
+  color: rgb(54, 54, 54);
+}
+
+th {
+  padding: 13px 10px; 
+  font-weight: 700;
+  text-align: left;
+}
+
+td {
+  padding: 10px;  
+  text-align: left;
+}
+
+tbody {
+  text-align: center;
+}
+
+.error-message {
+  text-align: center;
+  background-color: #fafafa;
+  color: rgb(54, 54, 54);
+  padding: 8px;
+  margin: 2em auto;
+  border-radius: 4px;
+}

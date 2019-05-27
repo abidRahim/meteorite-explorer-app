@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './TableRow.css';
 
 class TableRow extends Component {
@@ -14,7 +14,7 @@ class TableRow extends Component {
         <td>{rowItem.fall}</td>
         <td>{new Date(rowItem.year).getFullYear()}</td>
         <td>{rowItem.reclat}</td>
-        <td>{rowItem.reclong}</td>        
+        <td>{rowItem.reclong}</td>
       </tr>
     );
   }

@@ -1,26 +1,16 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './MeteorTable.css';
 import TableRow from '../TableRow';
 
 class MeteorTable extends Component {
-  constructor() {
-    super();
-    this.state = {
-      meteorData: [],
-      isLoading: true,
-      start: 0,
-      end: 10,
-    }
-  }  
-
   render() {
-    const { meteorData, start, end } = this.state;
+    const { displayData } = this.props;
     return (
       <div className="table-data">
-        <table>
+        <table className="table-container">
           <thead>
             <tr>
-              <th>Name</th>
+              <th className="name">Name</th>
               <th>Id</th>
               <th>Name Type</th>
               <th>Rec Class</th>
@@ -32,7 +22,9 @@ class MeteorTable extends Component {
             </tr>
           </thead>
           <tbody>
-            { [...meteorData].map((row) => <TableRow rowItem={row} />) }            
+            { (displayData && displayData.length > 0) ? displayData.map(row => <TableRow key={row.id} rowItem={row} />) : (              
+              <p className="error-message"> There are no results to display :(  </p>
+            )}
           </tbody>
         </table>
       </div>

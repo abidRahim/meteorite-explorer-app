@@ -1,5 +1,41 @@
 .main {
   background-color: rgb(46, 45, 45);
-  height: calc(100vh - var(--header-height));
+  min-height: calc(100vh - var(--header-height));
   text-align: center;
+}
+
+.nav-features {
+  margin: 0 auto;
+  width: 92%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.width{
+  width: 13em;
+}
+
+.listPerPage {
+  /* width: 100%; */
+  display: inline-block;
+  background-color: rgb(241, 152, 69);
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.select-box {
+  margin-left: 7px;
+  font-size: 1rem;
+}
+
+.btn {
+  border: none;
+  background-color: #fafafa;
+  font-weight: 700;
+  padding: 0.6em;
+  border-radius: 8px;
+  margin: 0.4em;
+  text-transform: capitalize;
+  border: 2px solid rgb(87, 87, 87);
 }

@@ -1,23 +1,37 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './SearchBar.css';
 
 class SearchBar extends Component {
   constructor() {
     super();
     this.state = {
-      value: "",
+      value: '',
+    };
+    this.onChange = this.onChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  onChange(e) {
+    const { search } = this.props;
+    this.setState({
+      value: e.target.value,
+    }, search(e.target.value));
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    if(this.state.value === "") {
+      console.log('true');
+      return <p className="error-message">Oops, the search bar seems to be empty</p>;
     }
   }
-  onChange = (e) => {
-    this.setState({
-      value: e.target.value
-    });
-  }
+
   render() {
+    const { value } = this.state;
     return (
       <div className="search-box">
-        <form action="">
-          <input type="search" name="search" className="search-input" id="meteor-name-search" placeholder="Enter search items" onChange={this.onChange} value={this.state.value}/>
+        <form onSubmit={this.handleSubmit}>
+          <input type="search" name="search" className="search-input" id="meteor-name-search" placeholder="Enter search items" onChange={this.onChange} value={value} />
           <button className="search-btn" type="submit">SEARCH</button>
         </form>        
       </div>

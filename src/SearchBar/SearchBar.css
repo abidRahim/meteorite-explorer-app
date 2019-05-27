@@ -9,13 +9,14 @@
 
 input.search-input {
   border: none;
-  border-bottom: 5px;
+  border-bottom: 1.25px solid rgb(114, 114, 114);
   outline: none;
   font-size: 1.1rem;
+  margin-right: 8px;
 }
 
 .search-btn {
-  border: none;  
+  border: none;
   background-color: #3741ca77;
   font-weight: 700;
   padding: 0.8em;
