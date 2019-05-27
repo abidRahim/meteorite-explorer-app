@@ -21,15 +21,13 @@ const range = (from, to, step = 1) => {
 }
 class Pagination extends Component {
   constructor(props) {
-    super(props);
-    const { totalRecords = null, pageLimit = 30, pageNeighbours = 0 } = props;
-    this.pageLimit = typeof pageLimit === 'number' ? pageLimit : 30;
-    this.totalRecords = typeof totalRecords === 'number' ? totalRecords : 0;
+    super(props);    
+    const { totalRecords, pageLimit, pageNeighbours } = props;    
     // pageNeighbours can be: 0, 1 or 2
     this.pageNeighbours = typeof pageNeighbours === 'number'
       ? Math.max(0, Math.min(pageNeighbours, 2))
       : 0;
-    this.totalPages = Math.ceil(this.totalRecords / this.pageLimit);
+    this.totalPages = Math.ceil(totalRecords / pageLimit);
     this.state = { currentPage: 1 };
   }
 
@@ -38,18 +36,18 @@ class Pagination extends Component {
   }
 
   gotoPage = page => {
-    const { onPageChanged = f => f } = this.props;
+    const { searchKey, pageLimit, onPageChanged = f => f } = this.props;
 
     const currentPage = Math.max(0, Math.min(page, this.totalPages));
 
     const paginationData = {
       currentPage,
+      pageLimit,
       totalPages: this.totalPages,
-      pageLimit: this.pageLimit,
       totalRecords: this.totalRecords
     };
 
-    this.setState({ currentPage }, () => onPageChanged(paginationData));
+    this.setState( { currentPage }, () => onPageChanged(paginationData, searchKey));
   }
 
   handleClick = page => evt => {
@@ -68,6 +66,7 @@ class Pagination extends Component {
   }
 
   fetchPageNumbers = () => {
+
 
     const totalPages = this.totalPages;
     const currentPage = this.state.currentPage;
@@ -129,7 +128,7 @@ class Pagination extends Component {
 
   render() {
 
-    if (!this.totalRecords || this.totalPages === 1) return null;
+    if (!this.props.totalRecords || this.totalPages === 1) return null;
 
     const { currentPage } = this.state;
     const pages = this.fetchPageNumbers();

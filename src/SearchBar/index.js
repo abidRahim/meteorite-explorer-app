@@ -19,10 +19,11 @@ class SearchBar extends Component {
       pageLimit: 20,
     };
     const { search } = this.props;
+    search(data, e.target.value);
     this.setState({
       value: e.target.value,
       emptyString: false,
-    }, search(data, e.target.value));
+    });
   }
 
   handleSubmit(e) {

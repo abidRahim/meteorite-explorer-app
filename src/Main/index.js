@@ -14,17 +14,21 @@ class Main extends Component {
     this.state = {
       meteorData: [],
       displayData: [],
+      cacheData: [],
       isLoading: true,
-      currentPage: null, 
+      currentPage: null,
       totalPages: null,
       pageLimit: null,
+      error: false,
+      searchState: null,
+      searchKey: null,
     };
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.onPageChanged = this.onPageChanged.bind(this);
   }
 
   async componentDidMount() {
-    const data = { 
+    const data = {
       currentPage: 1,
       totalPages: null,
       pageLimit: 20,
@@ -36,25 +40,43 @@ class Main extends Component {
         isLoading: false,
       });
     } catch (error) {
-      console.error(error);
+      if (error) {
+        this.setState({
+          error: true,
+        });
+      }
     }
-    this.onPageChanged(data);
+    this.onPageChanged(data, this.state.searchKey);
   }
 
   onPageChanged = (data, searchKey) => {
     const { meteorData } = this.state;
     const { currentPage, totalPages, pageLimit } = data;
     let displayData = [];
+    let cacheData = [];
 
     const offset = (currentPage - 1) * pageLimit;
 
-    if (searchKey === undefined) {  
-      displayData = [...meteorData].slice(offset, offset + pageLimit);    
+    if (searchKey === undefined || searchKey === null) {
+      displayData = [...meteorData].slice(offset, offset + pageLimit);
+      this.setState({
+        displayData,
+        searchState: false,
+      })
     } else {
       const results = [...meteorData].filter(val => val.name.toLowerCase().indexOf(searchKey.toLowerCase()) !== -1);
+      cacheData = results;
       displayData = results.slice(offset, offset + pageLimit);
+      this.setState({ 
+        currentPage,
+        displayData,
+        cacheData,
+        totalPages,
+        pageLimit,
+        searchKey,
+        searchState: true,
+      });
     }
-    this.setState({ currentPage, displayData, totalPages, pageLimit });
   }
 
   handleSelectChange(e) {
@@ -63,33 +85,36 @@ class Main extends Component {
     });
   }
 
-  render() { 
-    const { meteorData, displayData, isLoading, pageLimit} = this.state;
-    const totalMet = meteorData.length;
+  render() {
+    const { meteorData, cacheData, displayData, isLoading, error, searchState, searchKey} = this.state;
+    const totalMet = searchState ? cacheData.length : meteorData.length;
 
-    if(totalMet === 0) return null;
     return (
       <main className="main">
-        <SearchBar search={this.onPageChanged} />
-        <div className="table-box">
-          {isLoading ? <Loader /> : <MeteorTable displayData={displayData} />}
-        </div>
-        {displayData && displayData.length > 0 ? (
-          <div className="nav-features">
-            {/* <div className="width">
-          </div> */}
-            <div className="d-flex flex-row py-4 align-items-center">
-              <Pagination totalRecords={totalMet} pageLimit={20} pageNeighbours={1} onPageChanged={this.onPageChanged} />
-            </div>            
-            {/* <div className="listPerPage"> Results Per Page
-            <select name="listPerPage" id="listPerPage" className="select-box" value={pageLimit} onChange={this.handleSelectChange}>
-                <option value="10">10</option>
-                <option value="20" selected={true}>20</option>
-                <option value="30">30</option>
-              </select>
-            </div> */}
+        {error ? 
+        ( <p className="error-message">Server Error: API request error or server not found</p> ) :
+        ( <>
+          <SearchBar search={this.onPageChanged} />
+          <div className="table-box">
+            {isLoading ? <Loader /> : <MeteorTable displayData={displayData} />}
           </div>
-        ) : ('')}
+          { displayData && displayData.length > 0 ? (
+            <div className="nav-features">
+            {/* <div className="width">
+            </div> */}
+            <div className="d-flex flex-row py-4 align-items-center">
+              <Pagination totalRecords={totalMet} searchKey={searchState ? searchKey : null} pageLimit={20} pageNeighbours={1} onPageChanged={this.onPageChanged} />
+            </div>
+            {/* <div className="listPerPage"> Results Per Page
+              <select name="listPerPage" id="listPerPage" className="select-box" value={pageLimit} onChange={this.handleSelectChange}>
+                  <option value="10">10</option>
+                  <option value="20" selected={true}>20</option>
+                  <option value="30">30</option>
+                </select>
+              </div> */}
+          </div> ) : ('')}
+          </>
+        )}
       </main>
     );
   }
