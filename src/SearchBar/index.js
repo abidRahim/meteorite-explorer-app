@@ -6,6 +6,7 @@ class SearchBar extends Component {
     super();
     this.state = {
       value: '',
+      emptyString: false
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,25 +21,28 @@ class SearchBar extends Component {
     const { search } = this.props;
     this.setState({
       value: e.target.value,
+      emptyString: false,
     }, search(data, e.target.value));
   }
 
   handleSubmit(e) {
     e.preventDefault();
     if (this.state.value === "") {
-      console.log('true');
-      return <p className="error-message">Oops, the search bar seems to be empty</p>;
+      this.setState({
+        emptyString: true,
+      });
     }
   }
 
   render() {
-    const { value } = this.state;
+    const { value, emptyString } = this.state;
     return (
       <div className="search-box">
         <form onSubmit={this.handleSubmit}>
           <input type="search" name="search" className="search-input" id="meteor-name-search" placeholder="Enter search items" onChange={this.onChange} value={value} />
           <button className="search-btn" type="submit">SEARCH</button>
         </form>
+        { emptyString ? <span className="error-message">Dont leave the search bar empty</span> : '' }        
       </div>
     );
   }

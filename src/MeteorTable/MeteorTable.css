@@ -47,9 +47,14 @@ tbody {
 }
 
 .error-message {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
-  background-color: #fafafa;
+  background-color: #cc8282;
   color: rgb(54, 54, 54);
+  font-size: 1.2rem;
+  font-weight: 700;
   padding: 8px;
   margin: 2em auto;
   border-radius: 4px;
