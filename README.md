@@ -1,5 +1,9 @@
 # Meteorite explorer
 ---
+Lets user search metoerite names, which returns a detailed tabular data of matching string.
+
+***Running live on : https://mighty-meteorite.netlify.com***
+
 
 ## Run guide
 
@@ -9,7 +13,7 @@ or
 
 `npm install`
 
-## Used API
+## API used
 
 ```
 https://data.nasa.gov/resource/gh4g-9sfh.json
