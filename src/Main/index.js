@@ -67,7 +67,7 @@ class Main extends Component {
       const results = [...meteorData].filter(val => val.name.toLowerCase().indexOf(searchKey.toLowerCase()) !== -1);
       cacheData = results;
       displayData = results.slice(offset, offset + pageLimit);
-      this.setState({ 
+      this.setState({
         currentPage,
         displayData,
         cacheData,
@@ -86,35 +86,26 @@ class Main extends Component {
   }
 
   render() {
-    const { meteorData, cacheData, displayData, isLoading, error, searchState, searchKey} = this.state;
+    const { meteorData, cacheData, displayData, isLoading, error, searchState, searchKey } = this.state;
     const totalMet = searchState ? cacheData.length : meteorData.length;
 
     return (
       <main className="main">
-        {error ? 
-        ( <p className="error-message">Server Error: API request error or server not found</p> ) :
-        ( <>
-          <SearchBar search={this.onPageChanged} />
-          <div className="table-box">
-            {isLoading ? <Loader /> : <MeteorTable displayData={displayData} />}
-          </div>
-          { displayData && displayData.length > 0 ? (
-            <div className="nav-features">
-            {/* <div className="width">
-            </div> */}
-            <div className="d-flex flex-row py-4 align-items-center">
-              <Pagination totalRecords={totalMet} searchKey={searchState ? searchKey : null} pageLimit={20} pageNeighbours={1} onPageChanged={this.onPageChanged} />
+        {error ?
+          (<p className="error-message">Server Error: API request error or server not found</p>) :
+          (<>
+            <SearchBar search={this.onPageChanged} />
+            <div className="table-box">
+              {isLoading ? <Loader /> : <MeteorTable displayData={displayData} />}
             </div>
-            {/* <div className="listPerPage"> Results Per Page
-              <select name="listPerPage" id="listPerPage" className="select-box" value={pageLimit} onChange={this.handleSelectChange}>
-                  <option value="10">10</option>
-                  <option value="20" selected={true}>20</option>
-                  <option value="30">30</option>
-                </select>
-              </div> */}
-          </div> ) : ('')}
+            {displayData && displayData.length > 0 ? (
+              <div className="nav-features">
+                <div className="d-flex flex-row py-4 align-items-center">
+                  <Pagination totalRecords={totalMet} searchKey={searchState ? searchKey : null} pageLimit={20} pageNeighbours={1} onPageChanged={this.onPageChanged} />
+                </div>
+              </div>) : ('')}
           </>
-        )}
+          )}
       </main>
     );
   }

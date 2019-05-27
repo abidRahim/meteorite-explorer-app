@@ -1,7 +1,7 @@
 .search-box {
   display: inline-block;
   margin: 0.8em auto;
-  width: 25%;  
+  width: 22%;  
   padding: 0.7em 0;
   background-color: #fff;
   border-radius: 4px;
@@ -12,7 +12,7 @@ input.search-input {
   border-bottom: 1.25px solid rgb(114, 114, 114);
   outline: none;
   font-size: 1.1rem;
-  margin-right: 8px;
+  width: 90%;
 }
 
 .search-btn {

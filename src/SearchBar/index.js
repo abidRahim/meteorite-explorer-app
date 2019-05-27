@@ -40,8 +40,7 @@ class SearchBar extends Component {
     return (
       <div className="search-box">
         <form onSubmit={this.handleSubmit}>
-          <input type="search" name="search" className="search-input" id="meteor-name-search" placeholder="Enter search items" onChange={this.onChange} value={value} />
-          <button className="search-btn" type="submit">SEARCH</button>
+          <input type="search" name="search" className="search-input" id="meteor-name-search" placeholder="Enter a name to search" onChange={this.onChange} value={value} />
         </form>
         { emptyString ? <span className="error-message">Dont leave the search bar empty</span> : '' }        
       </div>
