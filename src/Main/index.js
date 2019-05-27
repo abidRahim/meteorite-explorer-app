@@ -54,17 +54,17 @@ class Main extends Component {
       const results = [...meteorData].filter(val => val.name.toLowerCase().indexOf(searchKey.toLowerCase()) !== -1);
       displayData = results.slice(offset, offset + pageLimit);
     }
-    this.setState({ currentPage, displayData, totalPages });
+    this.setState({ currentPage, displayData, totalPages, pageLimit });
   }
 
   handleSelectChange(e) {
     this.setState({
-      listPerPage: e.target.value
+      pageLimit: e.target.value
     });
   }
 
   render() { 
-    const { meteorData, displayData, isLoading} = this.state;
+    const { meteorData, displayData, isLoading, pageLimit} = this.state;
     const totalMet = meteorData.length;
 
     if(totalMet === 0) return null;
@@ -77,16 +77,14 @@ class Main extends Component {
         {displayData && displayData.length > 0 ? (
           <div className="nav-features">
             {/* <div className="width">
-            </div> */}
-            <div className="navigation-button">
+          </div> */}
             <div className="d-flex flex-row py-4 align-items-center">
               <Pagination totalRecords={totalMet} pageLimit={20} pageNeighbours={1} onPageChanged={this.onPageChanged} />
-            </div>
-            </div>
+            </div>            
             {/* <div className="listPerPage"> Results Per Page
-            <select name="listPerPage" id="listPerPage" className="select-box" value={listPerPage} onChange={this.handleSelectChange}>
+            <select name="listPerPage" id="listPerPage" className="select-box" value={pageLimit} onChange={this.handleSelectChange}>
                 <option value="10">10</option>
-                <option value="20">20</option>
+                <option value="20" selected={true}>20</option>
                 <option value="30">30</option>
               </select>
             </div> */}
